@@ -1,7 +1,7 @@
 ## java
 ---
 
-### 1、sleep、wait、notify、notifyAll
+### :point_right: sleep、wait、notify、notifyAll
 
 wait()，当前线程进行wait等待状态，同时释放资源锁，其他正在等待该锁的线程开始抢占锁进而运行，当调用了notify() 方法，之前调用wait()的线程才会解除wait状态，有权重新去参与竞争同步资源锁，如果抢到锁可以继续执行。
 
@@ -26,7 +26,7 @@ wait(long timeout)，让当前线程处于“等待状态”，“直到其他�
 
 https://hacpai.com/article/1488015279637
 
-### 2、Collections.shuffle()
+### :point_right: Collections.shuffle()
 
 对集合元素的顺序随机打乱
 
@@ -39,7 +39,7 @@ https://hacpai.com/article/1488015279637
 
 https://blog.csdn.net/u011514810/article/details/51218784
 
-### 3、Exchanger
+### :point_right: Exchanger
 
 ```
 String exchange(V x)  用于交换，启动交换并等待另一个线程调用exchange。
@@ -49,7 +49,7 @@ String exchange(V x,long timeout,TimeUnit unit)  用于交换，启动交换并�
 
 https://blog.csdn.net/carson0408/article/details/79477280
 
-### 4、Sytem.exit
+### :point_right: Sytem.exit
 
 ```
 public static void exit(int status) {
