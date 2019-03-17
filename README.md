@@ -1,4 +1,4 @@
-## java 常用类使用详情
+## JAVA 常用类使用详解
 ---
 
 * [sleep、wait、notify、notifyAll【chapter1】](resource/1.md)
