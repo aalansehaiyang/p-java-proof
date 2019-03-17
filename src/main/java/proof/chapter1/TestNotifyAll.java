@@ -1,4 +1,4 @@
-package proof.a;
+package proof.chapter1;
 
 public class TestNotifyAll {
 
