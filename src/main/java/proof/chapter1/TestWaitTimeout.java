@@ -44,9 +44,15 @@ public class TestWaitTimeout {
         public void run() {
             synchronized (lock) {
                 System.out.println("thread2 start...");
-                while (true) {
-                    // 一直不释放锁
+//                while (true) {
+//                    // 一直不释放锁
+//
+//                }
 
+                try {
+                    Thread.sleep(6000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -55,7 +61,7 @@ public class TestWaitTimeout {
 
     public static void main(String[] args) {
         Object lock = new Object();
-        Thread t1 = new Thread(new TestWaitTimeout.Thread1(lock));
+        Thread t1 = new Thread(new Thread1(lock));
         t1.start();
 
         try {
@@ -64,7 +70,7 @@ public class TestWaitTimeout {
             e.printStackTrace();
         }
 
-        new Thread(new TestWaitTimeout.Thread2(lock)).start();
+        new Thread(new Thread2(lock)).start();
 
         // t1.interrupt();
     }
