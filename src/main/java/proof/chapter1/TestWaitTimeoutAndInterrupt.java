@@ -1,9 +1,6 @@
 package proof.chapter1;
 
-/**
- * @author onlyone
- */
-public class TestWaitTimeout {
+public class TestWaitTimeoutAndInterrupt {
 
     private static Long startTime = System.currentTimeMillis();
 
@@ -76,8 +73,15 @@ public class TestWaitTimeout {
             e.printStackTrace();
         }
 
-        Thread t2 = new Thread(new  Task2(lock));
+        Thread t2 = new Thread(new Task2(lock));
         t2.start();
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+         t2.interrupt();
     }
 }
