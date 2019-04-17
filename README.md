@@ -12,4 +12,5 @@
 * [ReentrantLock、ReentrantReadWriteLock、Condition ](resource/5.md)
 * [CountDownLatch、CyclicBarrier](resource/9.md)
 * [Semaphore](resource/10.md)
+* [CompletableFuture](resource/12.md)
 
