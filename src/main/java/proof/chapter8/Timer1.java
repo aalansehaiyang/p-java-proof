@@ -2,17 +2,13 @@ package proof.chapter8;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author onlyone
  */
-public class Schedule1 {
+public class Timer1 {
 
     public static void main(String[] args) {
-
-        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

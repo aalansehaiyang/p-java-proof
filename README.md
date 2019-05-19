@@ -13,4 +13,4 @@
 * [CountDownLatch、CyclicBarrier](resource/9.md)
 * [Semaphore](resource/10.md)
 * [CompletableFuture](resource/12.md)
-* [定时任务 Timer、ScheduledExecutorService](resource/13.md)
+* [延迟任务 ScheduledExecutorService、Timer](resource/13.md)
