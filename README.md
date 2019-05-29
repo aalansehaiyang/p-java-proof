@@ -9,8 +9,10 @@
 * [AtomicReference ](resource/6.md)
 * [BlockingQueue](resource/11.md)
 * [ThreadPoolExecutor](resource/8.md)
+* [ScheduledExecutorService、Timer](resource/13.md)
 * [ReentrantLock、ReentrantReadWriteLock、Condition ](resource/5.md)
 * [CountDownLatch、CyclicBarrier](resource/9.md)
 * [Semaphore](resource/10.md)
 * [CompletableFuture](resource/12.md)
-* [延迟任务 ScheduledExecutorService、Timer](resource/13.md)
+* [CompletionService](resource/14.md)
+
