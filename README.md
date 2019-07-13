@@ -16,4 +16,5 @@
 * [Future](resource/15.md)
 * [CompletableFuture](resource/16.md)
 * [CompletionService](resource/14.md)
+* [lambda、方法引用、Stream](https://github.com/aalansehaiyang/java8-tutorial)
 

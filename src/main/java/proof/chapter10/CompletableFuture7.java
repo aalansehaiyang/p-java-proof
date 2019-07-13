@@ -6,6 +6,8 @@ import proof.util.Shop;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -13,22 +15,27 @@ import java.util.stream.Collectors;
  */
 public class CompletableFuture7 {
 
-    static List<Shop> shops;
+    static List<Shop>      shops;
+    static ExecutorService executorService = Executors.newFixedThreadPool(30);
 
     public static void main(String[] args) {
         // 造数据
         shops = Arrays.asList(new Shop(1L, "shop1"), new Shop(2L, "shop2"), new Shop(3L, "shop3"),
                               new Shop(4L, "shop4"), new Shop(5L, "shop5"), new Shop(6L, "shop6"));
 
+        // 开始时间
         startTime = System.currentTimeMillis();
 
         List<Shop> result = null;
 
         // 已耗时毫秒：1613
-//        result = findPriceTest1(1L);
+        // result = findPriceTest1(1L);
 
         // 已耗时毫秒：1610
-         result = findPriceTest2(1L);
+        // result = findPriceTest2(1L);
+
+        // 已耗时毫秒：1000
+        result = findPriceTest3(1L);
 
         recordTime(JSON.toJSONString(result));
 
@@ -67,6 +74,24 @@ public class CompletableFuture7 {
         }).collect(Collectors.toList());
 
         return result;
+    }
+
+    // 实现三
+    private static List<Shop> findPriceTest3(Long productId) {
+
+        List<CompletableFuture<Shop>> priceFutures = shops.stream().map(shop -> {
+            return CompletableFuture.supplyAsync(() -> {
+                // 计算价格
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                }
+                shop.setPrice(shop.computationPrice(productId));
+                return shop;
+            }, executorService);
+        }).collect(Collectors.toList());
+
+        return priceFutures.stream().map(f -> f.join()).collect(Collectors.toList());
     }
 
     private static Long startTime;
