@@ -1,7 +1,7 @@
 ## JAVA 常用类使用详解
 ---
 
-* [lambda、方法引用、Stream](https://github.com/aalansehaiyang/java8-tutorial)
+* [函数式编程、lambda、方法引用、Stream](https://github.com/aalansehaiyang/java8-tutorial)
 * [sleep、wait、notify、notifyAll ](resource/1.md)
 * [Collections.shuffle()](resource/2.md)
 * [Exchanger](resource/3.md)
