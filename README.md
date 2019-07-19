@@ -1,5 +1,5 @@
-## JAVA 常用类使用详解
----
+## 下文列举了JDK常用类的使用说明：
+
 
 * [Java8 函数式编程、lambda、方法引用、Stream](https://github.com/aalansehaiyang/java8-tutorial)
 * [sleep、wait、notify、notifyAll ](resource/1.md)
