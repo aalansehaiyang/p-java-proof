@@ -591,7 +591,7 @@ private ThreadLocal<Context> taskExecutionTimer = new ThreadLocal<>();
 }
 ```
 
-### 八、工具类方法
+### 八、Executors 工具类方法
 
 * newFixedThreadPool， 有固定长度（nThreads）的线程数组，忙不过来时会把任务放到无限长的队列里，这是因为LinkedBlockingQueue 默认是一个无界队列。
 
@@ -602,8 +602,19 @@ public static ExecutorService newFixedThreadPool(int nThreads) {
                                   0L, TimeUnit.MILLISECONDS,
                                  new LinkedBlockingQueue<Runnable>());
 }
+```
+
+* newSingleThreadExecutor，创建单线程的线程池。队列长度为无限
 
 ```
+public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+        (new ThreadPoolExecutor(1, 1,
+                                0L, TimeUnit.MILLISECONDS,
+                                new LinkedBlockingQueue<Runnable>()));
+}
+```
+
 
 * newCachedThreadPool 的 maximumPoolSize 参数值是Integer.MAX_VALUE
 ，因此它对线程个数不做限制，忙不过来时无限创建临时线程，闲下来时再回收。它的任务队列是SynchronousQueue，表明队列长度为 0。
@@ -616,6 +627,26 @@ public static ExecutorService newCachedThreadPool() {
 }
 ```
 
+* newScheduledThreadPool，创建核心线程数为corePoolSize的延时任务线程池
 
+```
+public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) {
+    return new ScheduledThreadPoolExecutor(corePoolSize);
+}
+
+public ScheduledThreadPoolExecutor(int corePoolSize) {
+    super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
+          new DelayedWorkQueue());
+}
+```
+
+* newSingleThreadScheduledExecutor，创建核心线程数为1的延时任务线程池
+
+```
+public static ScheduledExecutorService newSingleThreadScheduledExecutor() {
+    return new DelegatedScheduledExecutorService
+        (new ScheduledThreadPoolExecutor(1));
+}
+```
 
 
