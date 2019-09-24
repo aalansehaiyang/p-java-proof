@@ -1,12 +1,14 @@
 ## ThreadPoolExecutor 
 ---
 
-### 一、前言
+### 一、开场白
 
-java是面向对象编程，讲究`池化`技术，线程池做了线程的复用利器，很多人都用过，可以说是非常重要。面试时很多面试官都会重点这块知识，但你是否真的了解线程池的内部细节？
+Java是面向对象编程，万事万物皆对象，讲究`池化`技术，可以避免对象频繁的创建、销毁，浪费性能。线程池作为线程的复用利器，工作中都用过，可以说是非常非常重要。面试时很多面试官也会重点考察这块知识，用归用，但你是否真的了解线程池的内部原理？
 
-* 核心线程、最大线程、阻塞队列，这三者是什么关系？
-* Runnable任务是作为构造器入参来实例化Thread对象的，如果一个Runnable执行完，下一个Runnable如何传入Thread对象中？
+* 核心线程、最大线程、阻塞队列、拒绝策略，这四者是什么关系？
+* 拒绝策略有哪些？如何实现一个自定义的拒绝策略？
+* 如何动态调整线程池中的参数配置？
+* Runnable任务是作为构造器入参来实例化Thread对象的，如果一个Runnable任务执行完，下一个Runnable如何传入Thread对象中？
 * 空闲线程是如何回收的？回收的力度有多大？
 * ThreadPoolExecutor，预留了哪些扩展？如何做性能监控？
 
@@ -35,13 +37,16 @@ ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, Ti
    * allowCoreThreadTimeOut(boolean) 方法可将此超时策略应用于核心线程。
    * 另外，也可以使用setKeepAliveTime()动态地更改参数。
 
-4、unit（存活时间的单位）：时间单位，分为7类，从细到粗顺序：NANOSECONDS（纳秒），MICROSECONDS（微妙），MILLISECONDS（毫秒），SECONDS（秒），MINUTES（分），HOURS（小时），DAYS（天）；
+4、unit（存活时间的单位）：
 
-5、workQueue（任务队列）：用于传输和保存等待执行任务的阻塞队列。可以使用此队列与线程进行交互：
+   * 时间单位，分为7类，从细到粗顺序：NANOSECONDS（纳秒），MICROSECONDS（微秒），MILLISECONDS（毫秒），SECONDS（秒），MINUTES（分），HOURS（小时），DAYS（天）；
 
+5、workQueue（任务队列）：
+
+  * 用于保存等待执行任务的阻塞队列，线程会不断从该队列拉取任务执行。
   * 如果运行的线程数少于 corePoolSize，优先创建新的线程，而不进行排队。
-  * 如果运行的线程数等于或多于 corePoolSize，则 Executor 始终首选将请求加入队列，而不添加新的线程。
-  * 如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝。
+  * 如果运行的线程数大于等于 corePoolSize，则 Executor 始终首选将请求加入队列，而不是创建新的线程。
+  * 如果无法将任务加入队列，则创建新的线程，除非线程数已经达到 maximumPoolSize，此时，任务将被拒绝。
 
 
 6、threadFactory（线程工厂）：
@@ -49,12 +54,14 @@ ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, Ti
    * 用于创建新线程。由同一个threadFactory创建的线程，属于同一个ThreadGroup，创建的线程优先级都为Thread.NORM_PRIORITY，以及是非守护进程状态。
    * threadFactory创建的线程也是采用new Thread()方式，threadFactory创建的线程名都具有统一的风格：pool-m-thread-n（m为线程池的编号，n为线程池内的线程编号）;
 
-7、handler（拒绝策略）：当线程池和队列都满了，则表明该线程池已达饱和状态。
+7、handler（拒绝策略）：
 
-   * ThreadPoolExecutor.AbortPolicy：拒绝，直接抛出异常 RejectedExecutionException。(默认策略)
-   * ThreadPoolExecutor.CallerRunsPolicy：调用者所在线程来运行该任务，能够**减缓新任务的提交速度**。
+   * 当线程池和队列都满了，则表明该线程池已达饱和状态。
+   * ThreadPoolExecutor.AbortPolicy：拒绝并抛出异常 RejectedExecutionException。(默认策略)
+   * ThreadPoolExecutor.CallerRunsPolicy：调用者所在线程来运行该任务，**能够减缓新任务的提交速度**。
    * ThreadPoolExecutor.DiscardPolicy：直接扔掉。
    * ThreadPoolExecutor.DiscardOldestPolicy：如果线程池尚未关闭，将队列的头元素移除，然后提交当前任务
+   * 也可以实现 RejectedExecutionHandler接口，自定义拒绝策略。
 
 
 ### 三、状态、计数字段
@@ -108,7 +115,6 @@ ctl是线程池的核心状态控制字段，本身是一个AtomicInteger，用�
 
 * 线程池是否处于运行状态。
 
-这五种状态中，只有RUNNING的最高位是1，为负数，所以只需要判断ctl是否大于0就能得知线程是否处于该状态。
 
 ```
 private static boolean isRunning(int c) {
@@ -129,7 +135,7 @@ private static int runStateOf(int c)     { return c & ~CAPACITY; }
 private static int workerCountOf(int c)  { return c & CAPACITY; }
 ```
 
-* 其它
+* 线程池的统计数据
 
 ```
 long getTaskCount() // 已完成和未执行的任务总数；
@@ -187,13 +193,11 @@ public void execute(Runnable command) {
 }
 ```
 
-
 * 若当前线程数小于corePoolSize，则创建一个新的线程来执行任务
 * 若当前线程数大于等于corePoolSize，且阻塞队列未满，则将任务添加到队列中
 * 如果阻塞队列已满，但当前线程数小于maximumPoolSize，则创建一个“临时”线程来执行任务
-* 若当前线程数大于等于maximumPoolSize，且阻塞队列已满，此时就会执行拒绝策略
+* 若当前线程数大于等于maximumPoolSize，且阻塞队列已满，此时会执行拒绝策略
 
-  
 
 注意点：
 
@@ -471,6 +475,26 @@ private Runnable getTask() {
         * 如果达到keepAliveTime最大空闲时间，仍拿不到任务，线程计数减1，返回null
     * 如果设置allowCoreThreadTimeOut为true，空闲时，线程池数最小可能会为0
 
+#### advanceRunState（）方法
+
+更改线程池状态
+
+```
+private void advanceRunState(int targetState) {
+    for (;;) {
+        int c = ctl.get();
+        // 如果当前状态在目标状态之后
+        if (runStateAtLeast(c, targetState) ||
+            // 将目标状态+线程数，合成一个字段
+            ctl.compareAndSet(c, ctlOf(targetState, workerCountOf(c))))
+            break;
+    }
+}
+```
+
+* 如果当前状态在目标状态之后，跳出循环，不做任何处理
+* 否则，将目标状态+线程数，合成一个字段，更新到ctl
+
 ### 六、线程池关闭
 
 关闭线程池。他们的原理是遍历线程池的工作线程，然后逐个调用线程的interrupt方法来中断线程。
@@ -509,6 +533,7 @@ public List<Runnable> shutdownNow() {
         advanceRunState(STOP);
         // 把所有线程中断
         interruptWorkers();
+        // 把阻塞队列中的所有任务提取到List集合中，并返回
         tasks = drainQueue();
     } finally {
         mainLock.unlock();
@@ -521,12 +546,12 @@ public List<Runnable> shutdownNow() {
 
 区别：
 
-* shutdown方法，执行平缓的关闭过程：不在接收新的任务，同时等待已提交的任务执行完成，包括哪些还未开始执行的任务。
-* shutdownNow方法将执行粗暴的关闭过程：它将尝试取消所有运行中的任务，并且不再启动队列中尚未开始执行的任务。
+* shutdown方法，不再接收新的任务，已提交的任务会执行完
+* shutdownNow方法，比较粗暴，它将尝试中断所有运行中的任务，并且不再启动队列中尚未开始执行的任务。
 
-只要调用了这两个关闭方法中的任意一个，isShutdown方法就会返回true，当所有的任务都已关闭后，才表示线程池关闭成功，这时调用isTerminated方法会返回true。
+只要调用了这两个关闭方法中的任意一个，isShutdown（）方法就会返回true。当所有的任务都已关闭后，才表示线程池关闭成功，这时调用isTerminated（）方法会返回true。
 
-至于采用哪一种方法来关闭线程池，由业务特性决定，通常调用shutdown方法来关闭线程池。如果任务不强求一定要执行完，可以调用shutdownNow方法。
+采用哪一种方法来关闭线程池，由业务特性决定，大部分是采用shutdown（）方法来关闭线程池。如果任务不强求一定要执行完，可以调用shutdownNow（）方法。
 
 
 ### 七、扩展
