@@ -13,7 +13,7 @@
 * [ThreadPoolExecutor](resource/ThreadPoolExecutor-source-1.md)
 * [ScheduledExecutorService、Timer](resource/13.md)
 * [ReentrantLock](resource/17.md)
-* [ReentrantReadWriteLock、Condition ](resource/5.md)
+* [ReentrantReadWriteLock ](resource/5.md)
 * [CountDownLatch、CyclicBarrier](resource/9.md)
 * [Semaphore](resource/10.md)
 * [Future](resource/15.md)
