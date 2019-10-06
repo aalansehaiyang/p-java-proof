@@ -14,6 +14,7 @@
 * [ScheduledExecutorService、Timer](resource/13.md)
 * [ReentrantLock](resource/17.md)
 * [ReentrantReadWriteLock ](resource/5.md)
+* [StampedLock](resource/StampedLock.md)
 * [Semaphore](resource/10.md)
 * [CountDownLatch、CyclicBarrier](resource/9.md)
 * [Future](resource/15.md)
