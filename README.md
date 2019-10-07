@@ -8,6 +8,7 @@
 * [Sytem.exit](resource/4.md)
 * [Optional](resource/7.md)
 * [Unsafe](resource/18.md)
+* [原子类](resource/atomic.md)
 * [AtomicReference ](resource/6.md)
 * [并发容器：List、Map、Set](resource/Collection.md)
 * [BlockingQueue](resource/11.md)
