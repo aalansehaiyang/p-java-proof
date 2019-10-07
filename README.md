@@ -9,6 +9,7 @@
 * [Optional](resource/7.md)
 * [Unsafe](resource/18.md)
 * [AtomicReference ](resource/6.md)
+* [并发容器：List、Map、Set](resource/Collection.md)
 * [BlockingQueue](resource/11.md)
 * [ThreadPoolExecutor](resource/ThreadPoolExecutor-source-1.md)
 * [ScheduledExecutorService、Timer](resource/13.md)
