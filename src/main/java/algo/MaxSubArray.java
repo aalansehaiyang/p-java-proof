@@ -1,6 +1,7 @@
 package algo;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +17,10 @@ public class MaxSubArray {
      * 描述：
      * <p>
      * 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+     * <p>
+     * 场景：
+     * <p>
+     * 查看股票在一段时间内的曲线形态，需要得到最合适的买入和卖出时间。
      */
     static Map<String, Integer> maxSubArray(Integer[] nums) {
 
@@ -40,10 +45,10 @@ public class MaxSubArray {
 
         }
 
-        Map<String, Integer> result = new HashMap<>();
+        Map<String, Integer> result = new LinkedHashMap<>();
         result.put("startPositon", startPositon);
         result.put("endPosition", endPosition);
-        result.put("max", max);
+        result.put("maxValue", max);
         return result;
 
     }
