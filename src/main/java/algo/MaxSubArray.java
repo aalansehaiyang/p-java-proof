@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 最大子数组算法
+ * 连续子数组的最大和
  *
  * @author 微信公众号：微观技术
  */
@@ -67,8 +67,11 @@ public class MaxSubArray {
         Integer[] nums_4 = {1, -2, 4};
         System.out.println("nums_4运行结果：" + maxSubArray(nums_4));
 
-        Integer[] nums_5 = {1, -2, 4, 5, 3, -2, 1, 1};
+        Integer[] nums_5 = {1, -2, 4, 5, 3, -3, 1};
         System.out.println("nums_5运行结果：" + maxSubArray(nums_5));
+
+        Integer[] nums_6 = {1, -2, 4, 5, 3, -3, 1, 4};
+        System.out.println("nums_6运行结果：" + maxSubArray(nums_6));
 
 
     }
