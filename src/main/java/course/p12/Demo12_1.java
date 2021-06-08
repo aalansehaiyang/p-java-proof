@@ -85,4 +85,11 @@
 //        // 删除用户
 //        Object deleteById(Long uid);
 //    }
+//
+//    public interface ProjectService{
+//        // 加入一个项目
+//        void addProject (Object param);
+//        // 统计一个用户参加过多少个项目
+//        void countProject(Object param);
+//    }
 //}
