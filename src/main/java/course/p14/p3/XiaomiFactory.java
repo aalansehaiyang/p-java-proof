@@ -18,4 +18,12 @@ public class XiaomiFactory extends AbstractFactory {
     Object createRefrigerator() {
         return null;
     }
+
+    public static void main(String[] args) {
+        Object a = 2.4f;
+        if (a instanceof Float) {
+            System.out.println("dddd");
+        }
+    }
+
 }

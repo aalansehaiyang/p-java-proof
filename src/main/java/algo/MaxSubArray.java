@@ -27,11 +27,12 @@ public class MaxSubArray {
         if (nums.length <= 0) {
             return null;
         }
-        int max = 0, cur = 0;
+        int max = 0; // 最大值
+        int cur = 0; // 当前值
         int startPositon = -1, endPosition = -1;
         for (int i = 0; i < nums.length; i++) {
             if (cur < 0) {
-                cur = nums[i]; //如果前面加起来的和小于0，抛弃前面的
+                cur = nums[i]; // 如果前面加起来的和小于0，抛弃前面的
                 startPositon = i;
                 endPosition = i;
             } else {
